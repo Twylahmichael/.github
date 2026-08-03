@@ -1,0 +1,14 @@
+{
+  "name": "encore",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Encore Fitness Studio — companion system for efn.co.ke",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:api": "npm --workspace apps/api run dev",
+    "dev:admin": "npm --workspace apps/admin run dev",
+    "build": "npm --workspace apps/api run build && npm --workspace apps/admin run build && npm --workspace apps/embed run build"
+  }
+}
