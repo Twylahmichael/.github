@@ -33,26 +33,32 @@ const el = (tag, attrs = {}, ...children) => {
 
 const fetchJSON = (path) => fetch(`${API}${path}`).then(r => r.json());
 
+// If a member is signed in (portal session cookie shared via same domain),
+// show a "Book instantly" link to the portal alongside the WhatsApp CTA.
 async function renderSchedule(mount) {
   mount.classList.add('encore-schedule');
   mount.append(el('div', { class: 'encore-loading' }, 'Loading schedule…'));
-  const [{ slots }, stats] = await Promise.all([fetchJSON('/schedule'), fetchJSON('/stats')]);
+  const [{ slots }, stats, memberRes] = await Promise.all([
+    fetchJSON('/schedule'),
+    fetchJSON('/stats'),
+    fetch(`${API}/members/me`, { credentials: 'include' }).then(r => r.ok ? r.json() : null).catch(() => null),
+  ]);
   mount.textContent = '';
   const wa = stats['whatsapp.number'];
   const tpl = stats['whatsapp.template'] || "Hi Encore, I'd like to book {class} on {day} at {time}";
+  const portalUrl = window.ENCORE_PORTAL_URL || 'https://members.encore.twylah.co.ke';
+  const member = memberRes?.member;
   const board = el('div', { class: 'encore-board' });
   for (const s of slots) {
-    const card = el('a', {
-      class: 'encore-class-card',
-      href: whatsappHref(wa, tpl, s),
-      target: '_blank',
-      rel: 'noopener',
-    },
+    const primary = member
+      ? el('a', { class: 'encore-cta', href: `${portalUrl}/book?slot=${s.id}` }, `Book instantly`)
+      : el('a', { class: 'encore-cta', href: whatsappHref(wa, tpl, s), target: '_blank', rel: 'noopener' }, 'Book on WhatsApp');
+    const card = el('div', { class: 'encore-class-card' },
       el('div', { class: 'encore-day' }, DAYS[s.day_of_week]),
       el('div', { class: 'encore-time' }, `${fmtTime(s.start_time)} – ${fmtTime(s.end_time)}`),
       el('div', { class: 'encore-name' }, s.class_name),
       el('div', { class: 'encore-coach' }, s.coach_name || 'Coach TBA'),
-      el('div', { class: 'encore-cta' }, 'Book on WhatsApp'),
+      primary,
     );
     board.append(card);
   }

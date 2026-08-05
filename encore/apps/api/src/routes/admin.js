@@ -38,6 +38,38 @@ adminRouter.patch('/schedule/:id', requireAuth, (req, res) => {
 // (Coaches, events, gallery, settings, users, audit routes follow the same shape.
 // Kept out of this scaffold to stay honest about what's actually built vs. planned.)
 
+// Bookings — real now in Phase 2. Default view: this week.
+adminRouter.get('/bookings', requireAuth, (req, res) => {
+  const from = req.query.from || new Date().toISOString().slice(0, 10);
+  const to   = req.query.to   || new Date(Date.now() + 7 * 86400_000).toISOString().slice(0, 10);
+  const rows = db.prepare(`
+    SELECT b.id, b.session_date, b.status, b.source, b.created_at, b.cancelled_at,
+           b.member_name, b.member_phone, b.member_id,
+           s.class_name, s.start_time, s.end_time, s.day_of_week,
+           c.name AS coach_name
+    FROM bookings b
+    JOIN class_slots s ON s.id = b.slot_id
+    LEFT JOIN coaches c ON c.id = s.coach_id
+    WHERE b.session_date BETWEEN ? AND ?
+    ORDER BY b.session_date, s.start_time, b.created_at
+  `).all(from, to);
+  res.json({ bookings: rows, from, to });
+});
+
+// Staff can log a walk-in / phone booking manually.
+adminRouter.post('/bookings', requireAuth, (req, res) => {
+  const { slot_id, session_date, member_name, member_phone, source = 'walk-in' } = req.body || {};
+  if (!slot_id || !session_date || !member_name || !member_phone) {
+    return res.status(400).json({ error: 'slot_id, session_date, member_name, member_phone required' });
+  }
+  const result = db.prepare(`
+    INSERT INTO bookings (slot_id, session_date, member_name, member_phone, source, status)
+    VALUES (?, ?, ?, ?, ?, 'confirmed')
+  `).run(slot_id, session_date, member_name, member_phone, source);
+  audit(req, 'create', 'booking', result.lastInsertRowid, null, req.body);
+  res.status(201).json({ booking_id: result.lastInsertRowid });
+});
+
 adminRouter.get('/audit', requireOwner, (req, res) => {
   const limit = Math.min(Number(req.query.limit) || 100, 500);
   const rows = db.prepare(`SELECT id, actor_email, action, entity, entity_id, at FROM audit_log ORDER BY at DESC LIMIT ?`).all(limit);

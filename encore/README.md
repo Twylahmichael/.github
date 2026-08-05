@@ -15,10 +15,11 @@ Shop, checkout, and customer accounts stay exactly as they are.
 
 ```
 encore/
-├── docs/                   Client-facing proposal, architecture, design direction
+├── docs/                   Client-facing proposal, architecture, phase 2 notes, deploy
 ├── apps/
-│   ├── api/                Node + Express + SQLite — schedule, coaches, events, gallery
+│   ├── api/                Node + Express + SQLite — schedule, coaches, events, gallery, members, bookings
 │   ├── admin/              Vite + React admin panel (Owner / Staff roles)
+│   ├── portal/             Vite + React member portal — sign in, calendar, book a class
 │   └── embed/              Vanilla JS bundles injected into WordPress pages
 └── design/                 Design tokens, palette, type scale
 ```
@@ -34,9 +35,15 @@ encore/
 - Location & footer refresh (embedded map, IG/TikTok, M-Pesa Till)
 - Admin panel — dashboard, schedule manager, content manager, bookings view, audit log
 
-## Phase 2 (next)
+## Phase 2 (built)
 
-- Member logins + personal calendar so members track their own bookings
+- Member sign-up / sign-in with phone number (E.164, normalised) + password
+- Personal calendar — upcoming, cancel-until-start, bounded history
+- Portal booking flow with capacity + one-booking-per-session enforcement
+- Admin Bookings view over a date range, plus manual walk-in logging
+- Embed schedule shows "Book instantly" for signed-in members, WhatsApp for everyone else
+
+See [`docs/PHASE2.md`](docs/PHASE2.md).
 
 ## Shop
 

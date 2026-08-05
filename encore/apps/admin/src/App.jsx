@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-do
 import { Login } from './pages/Login.jsx';
 import { Dashboard } from './pages/Dashboard.jsx';
 import { Schedule } from './pages/Schedule.jsx';
+import { Bookings } from './pages/Bookings.jsx';
 import { Placeholder } from './pages/Placeholder.jsx';
 
 const api = (path, opts = {}) => fetch(`/api${path}`, {
@@ -57,7 +58,7 @@ export function App() {
             <Route path="/coaches" element={<Placeholder name="Coaches" />} />
             <Route path="/events" element={<Placeholder name="Events" />} />
             <Route path="/gallery" element={<Placeholder name="Gallery" />} />
-            <Route path="/bookings" element={<Placeholder name="Bookings" note="Wired up in Phase 2 with member accounts." />} />
+            <Route path="/bookings" element={<Bookings />} />
             {user.role === 'owner' && <Route path="/audit" element={<Placeholder name="Audit log" />} />}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

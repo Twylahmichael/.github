@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { db } from './db.js';
 import { publicRouter } from './routes/public.js';
 import { adminRouter } from './routes/admin.js';
+import { membersRouter } from './routes/members.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -18,6 +19,7 @@ app.use(cookieParser());
 app.get('/health', (_, res) => res.json({ ok: true }));
 
 app.use('/api', publicRouter);
+app.use('/api/members', membersRouter);
 app.use('/api/admin', adminRouter);
 
 app.use((err, _req, res, _next) => {
