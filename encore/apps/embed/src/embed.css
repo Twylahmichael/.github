@@ -1,0 +1,58 @@
+/* Encore embed styles — scoped under .encore-* to avoid clashing with Elementor/theme CSS. */
+
+:root {
+  --encore-ivory: #FAF6EF;
+  --encore-sand: #EDE3D2;
+  --encore-nude: #D9C4A7;
+  --encore-ink: #1F1B16;
+  --encore-teal: #1F7A73;
+  --encore-teal-deep: #0F4E49;
+  --encore-magenta: #C2185B;
+  --encore-magenta-deep: #8E0E42;
+  --encore-whatsapp: #25D366;
+}
+
+.encore-schedule .encore-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.encore-class-card {
+  display: block;
+  background: var(--encore-sand);
+  color: var(--encore-ink);
+  border-radius: 8px;
+  padding: 20px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(31, 27, 22, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.encore-class-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(31, 27, 22, 0.12); }
+.encore-class-card .encore-day { font-family: "Barlow Condensed", Oswald, system-ui, sans-serif; font-weight: 700; text-transform: uppercase; color: var(--encore-teal-deep); letter-spacing: 0.04em; font-size: 14px; }
+.encore-class-card .encore-time { font-family: "Barlow Condensed", system-ui, sans-serif; font-size: 22px; font-weight: 700; margin-top: 4px; }
+.encore-class-card .encore-name { font-size: 18px; font-weight: 600; margin-top: 8px; }
+.encore-class-card .encore-coach { font-size: 14px; color: var(--encore-teal); margin-top: 2px; }
+.encore-class-card .encore-cta { margin-top: 12px; display: inline-block; background: var(--encore-whatsapp); color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 13px; font-weight: 600; }
+
+.encore-coaches { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+.encore-coach-card { text-align: center; }
+.encore-coach-card img, .encore-coach-placeholder { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; background: var(--encore-nude); }
+.encore-coach-name { margin-top: 8px; font-weight: 600; }
+.encore-coach-specialty { font-size: 14px; color: var(--encore-teal); }
+
+.encore-events { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.encore-event-card { background: var(--encore-ivory); border-radius: 8px; padding: 16px; box-shadow: 0 2px 8px rgba(31, 27, 22, 0.08); }
+.encore-event-card img { width: 100%; border-radius: 4px; }
+
+.encore-gallery-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.encore-tab { text-transform: uppercase; background: transparent; border: 1px solid var(--encore-nude); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-size: 12px; letter-spacing: 0.06em; }
+.encore-tab:hover { border-color: var(--encore-teal); color: var(--encore-teal); }
+.encore-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.encore-gallery-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px; }
+
+.encore-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; text-align: center; }
+.encore-stat-num { font-family: "Barlow Condensed", system-ui, sans-serif; font-size: 48px; font-weight: 700; color: var(--encore-magenta); }
+.encore-stat-label { text-transform: uppercase; letter-spacing: 0.06em; font-size: 12px; color: var(--encore-ink); }
+
+.encore-loading { color: var(--encore-teal); font-style: italic; }
